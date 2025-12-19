@@ -1,0 +1,71 @@
+# user_management.py
+# Sample module with intentional mistakes for testing Codacy
+
+import re
+import json
+
+users = []  # Global list (bad practice)
+
+def create_user(username, email, password, age):
+    # Bad practice: No input validation for username
+    if not email or '@' not in email:
+        print("Invalid email address")  # Should raise exception instead
+        return False
+    
+    # Weak password check
+    if len(password) < 6 or password.isdigit():
+        print("Weak password, use letters and numbers")
+    
+    # Optional: forgot to return True on success
+    users.append({
+        'username':username,
+        'email':email,
+        'password':password,  # Security flaw: storing plain text password
+        'age':age
+    })
+
+def delete_user(email):
+    # Improper error handling
+    for user in users:
+        if user['email'] == email:
+            users.remove(user)
+            print("User deleted")
+        else:
+            print("User not found")  # Wrong logic: prints multiple times
+
+def update_user(email, new_username=None, new_email=None, new_password=None):
+    # Unused variable
+    found = False
+    for user in users:
+        if user['email'] == email:
+            found = True
+            if new_username:
+                user['username'] = new_username
+            if new_email:
+                user['email'] = new_email
+            if new_password:
+                user['password'] = new_password
+        # forgot handling if user not found
+    
+def list_users():
+    # Prints sensitive data
+    for user in users:
+        print(f"User: {user['username']}, Email: {user['email']}, Password: {user['password']}")
+
+def validate_age(age):
+    # Intentional type bug
+    if age < 18:
+        print("User is underage")
+    elif age > 100
+        print("Invalid age")  # Syntax error: missing colon
+    
+# Sample function calls with mistakes
+create_user("Usman", "usman@domain.com", "12345", 25)  # Weak password
+create_user("Ali", "alidomain.com", "abc123", 20)  # Invalid email
+create_user("Sara", "sara@domain.com", "password123", "twenty")  # Type error in age
+
+delete_user("nonexistent@domain.com")  # Should handle properly
+
+update_user("usman@domain.com", new_password="pass")  # Weak password
+
+list_users()  # Prints sensitive info
